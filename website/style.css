@@ -1,0 +1,10 @@
+body {
+    width: 100%;
+    height: auto;
+    background-color: rgba(16, 189, 219, 0.623);
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+}
