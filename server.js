@@ -36,6 +36,5 @@ function addJournal(req, res){
      }
     data.push(newEntries);
     let projectData = data;
-    console.log(projectData);
     res.send(projectData);
 }

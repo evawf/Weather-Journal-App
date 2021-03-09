@@ -1,6 +1,8 @@
 const date = document.getElementById('date');
 const temp = document.getElementById('temp');
 const content = document.getElementById('content');
+const zip = document.getElementById('zip');
+const feelings = document.getElementById('feelings');
 
 //Retrive Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
@@ -10,7 +12,6 @@ const getWeatherData = async (ZipCode) => {
     try {
         const data = await res.json();
         const tempValue = data['main']['temp'];
-        console.log(tempValue);
         return tempValue;
     }
     catch(error) {
@@ -40,16 +41,17 @@ const postData = async (url = '', data = {}) => {
 //Post data 
 document.getElementById('generate').addEventListener('click', addJournal);
 async function addJournal(e){
-    let currentDate = new Date().toLocaleDateString();
-    // date.textContent = currentDate;
-    let tempValue = await getWeatherData(document.getElementById('zip').value);
-    const contentValue = document.getElementById('feelings').value;
-    console.log(contentValue);
-    // content.textContent = contentValue;
-    postData('/journal', {date: currentDate, temp: tempValue, content: contentValue})
-    .then(
-        updateUI()
-    )
+    if(zip.value != "" && feelings.value != ""){
+        let currentDate = new Date().toLocaleDateString();
+        let tempValue = await getWeatherData(document.getElementById('zip').value);
+        const contentValue = document.getElementById('feelings').value;
+        postData('/journal', {date: currentDate, temp: tempValue, content: contentValue})
+        .then(
+            updateUI()
+        )
+    }else{
+        document.getElementById('entryHolder').innerHTML = "Please enter Zipcode and your feelings!"
+    }
 }
 
 //Update UI
@@ -57,9 +59,10 @@ const updateUI = async () => {
     const request = await fetch('/journal');
     try{
         const allData = await request.json();
-        date.innerHTML = allData[0].date;
-        temp.innerHTML = allData[0].temp;
-        content.innerHTML = allData[0].content;
+        console.log(allData);
+        date.innerHTML = allData[allData.length - 1].date;
+        temp.innerHTML = allData[allData.length - 1].temp;
+        content.innerHTML = allData[allData.length - 1].content;
     }catch(error){
         console.log('error', error);
     }
