@@ -50,7 +50,7 @@ async function addJournal(e){
             updateUI()
         )
     }else{
-        document.getElementById('entryHolder').innerHTML = "Please enter Zipcode and your feelings!"
+        document.getElementById('entryHolder').innerHTML = "Please enter Zipcode and your feelings!";
     }
 }
 
@@ -61,7 +61,7 @@ const updateUI = async () => {
         const allData = await request.json();
         console.log(allData);
         date.innerHTML = allData[allData.length - 1].date;
-        temp.innerHTML = allData[allData.length - 1].temp;
+        temp.innerHTML = allData[allData.length - 1].temp + '&deg;C';
         content.innerHTML = allData[allData.length - 1].content;
     }catch(error){
         console.log('error', error);
