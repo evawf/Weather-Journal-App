@@ -51,6 +51,7 @@ async function addJournal(e){
         )
     }else{
         document.getElementById('entryHolder').innerHTML = "Please enter Zipcode and your feelings!";
+        document.getElementById('entryHolder').style.color = "red";
     }
 }
 

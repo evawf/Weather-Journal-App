@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Weather Journal App</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Journal App</title>
+  <!-- Load Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans:900|Merriweather&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <!-- Load Styles -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <div class="headline">
-          Weather Journal App
-        </div>
-        <div class="zip">
-          <label for="zip">Enter Zipcode here</label>
-          <input type="text" id="zip" placeholder="Enter zip code here">
-        </div>
-        <div class="feel">
-          <label for="feelings">How are you feeling today?</label>
-          <textarea class="myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
-          <button id="generate" type="submit"> Generate </button>
-        </div>
-        <div class="entry">
-            <div class="title">Most Recent Entry</div>
-            <div id="entryHolder">
-                <div id="date"></div> 
-                <div id="temp"></div>
-                <div id="content"></div>
-            </div>
-        </div>
+  <div id="app">
+    <div class="headline">
+      <h3>Weather Journal App</h3>
     </div>
+    <div class="zip">
+      <label for="zip">Enter Zipcode & Country code</label>
+      <input type="text" id="zip" placeholder="e.g., 94040,US">
+    </div>
+    <div class="feel">
+      <label for="feelings">How are you feeling today?</label>
+      <textarea class="myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
+      <button id="generate" type="submit">GO</button>
+    </div>
+    <div class="entry">
+      <div class="title">Most Recent Entry</div>
+      <div id="entryHolder">
+        <div id="date"></div> 
+        <div id="temp"></div>
+        <div id="content"></div>
+      </div>
+    </div>
+  </div>
     
-    <script src="app.js" type="text/javascript"></script>
-      
+  <script src="app.js" type="text/javascript"></script>
 </body>
 </html>
