@@ -11,8 +11,8 @@ const getWeatherData = async (ZipCode) => {
     const res = await fetch(baseURL+ZipCode+'&appid='+apiKey+'&units=metric')
     try {
         const data = await res.json();
-        const tempValue = data['main']['temp'];
-        return tempValue;
+        console.log(data);
+        return data;
     }
     catch(error) {
         console.log("error", error);
@@ -42,10 +42,19 @@ const postData = async (url = '', data = {}) => {
 document.getElementById('generate').addEventListener('click', addJournal);
 async function addJournal(e){
     if(zip.value != "" && feelings.value != ""){
-        let currentDate = new Date().toLocaleDateString();
-        let tempValue = await getWeatherData(document.getElementById('zip').value);
+        let currentDate = new Date().toDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        let data = await getWeatherData(document.getElementById('zip').value);
+        let tempValue = data.main.temp;
+        let locationValue = data.name + ", " + data.sys.country;
+        let weatherValue = data.weather[0].main + ", feels like" + data.main.feels_like;
         const contentValue = document.getElementById('feelings').value;
-        postData('/journal', {date: currentDate, temp: tempValue, content: contentValue})
+        postData('/journal', {
+            date: currentDate,
+            location: locationValue,
+            temp: tempValue,
+            weather: weatherValue,
+            content: contentValue
+        })
         .then(
             updateUI()
         )
@@ -60,10 +69,13 @@ const updateUI = async () => {
     const request = await fetch('/journal');
     try{
         const allData = await request.json();
-        console.log(allData);
+        const location = document.getElementById('location');
+        const weather = document.getElementById('weather');
         date.innerHTML = allData[allData.length - 1].date;
+        location.innerHTML = allData[allData.length - 1].location;
         temp.innerHTML = allData[allData.length - 1].temp + '&deg;C';
-        content.innerHTML = allData[allData.length - 1].content;
+        weather.innerHTML = allData[allData.length - 1].weather + '&deg;C';
+        content.innerHTML = "I feel " + allData[allData.length - 1].content;
     }catch(error){
         console.log('error', error);
     }

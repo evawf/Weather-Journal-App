@@ -29,10 +29,11 @@ function getJournal(req, res){
 const data = [];
 app.post('/journal', addJournal);
 function addJournal(req, res){
-    let currentDate = new Date().toLocaleDateString();
     const newEntries = {
-        date: currentDate,
+        date: req.body.date,
+        location: req.body.location,
         temp: req.body.temp,
+        weather: req.body.weather,
         content: req.body.content
      }
     data.push(newEntries);
