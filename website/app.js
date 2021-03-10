@@ -5,6 +5,7 @@ const zip = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
 const entryHolder = document.getElementById('entryHolder');
 
+
 //Retrive Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = '490a42fa7e4cec1525544b1a37201a2e';
