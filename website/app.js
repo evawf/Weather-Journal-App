@@ -4,6 +4,7 @@ const content = document.getElementById('content');
 const zip = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
 const entryHolder = document.getElementById('entryHolder');
+const { masterKey } = require('./config');
 
 
 //Retrive Data from Openweather API
