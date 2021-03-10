@@ -5,7 +5,7 @@ const zip = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
 const entryHolder = document.getElementById('entryHolder');
 
-//Retrive Data from Openweather API
+//Retrive Weather Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const getWeatherData = async (ZipCode) => {
     let KEYS = await getApiKey();
@@ -91,7 +91,6 @@ const updateUI = async () => {
         entryHolder.classList.add("showCard");
 
         //Load map
-        // getApiKey();
         displayMap();
     }catch(error){
         console.log('error', error);
@@ -122,13 +121,12 @@ async function displayMap(){
     .addTo(map);
 }
 
-//Get API Key
+//Get API Keys
 async function getApiKey (){
     const request = await fetch('/api');
     try{
         const KEYS = await request.json();
         return KEYS;
-
     }catch(error){
         console.log('error', error);
     }

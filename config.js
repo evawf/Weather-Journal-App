@@ -4,4 +4,3 @@ module.exports.KEYS = {
     owKey: process.env.OW_KEY,
     mapToken: process.env.MAP_TOKEN
 };
-

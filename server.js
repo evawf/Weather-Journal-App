@@ -52,6 +52,6 @@ function getKey(req, res){
     let KEYS = {
         "apiKey": apiKey,
         "mapToken": mapToken
-    };
+    }
     res.send(KEYS);
 }
