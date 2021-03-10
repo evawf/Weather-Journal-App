@@ -7,7 +7,7 @@ const entryHolder = document.getElementById('entryHolder');
 
 //Retrive Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = process.env.apiKey;
+const apiKey = '490a42fa7e4cec1525544b1a37201a2e';
 console.log(apiKey);
 const getWeatherData = async (ZipCode) => {
     const res = await fetch(baseURL+ZipCode+'&appid='+apiKey+'&units=metric')
