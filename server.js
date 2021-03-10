@@ -2,16 +2,16 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
+let apiKey = process.env.apiKey;
 let projectData = {};
 
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 app.use(express.static('website'));
 

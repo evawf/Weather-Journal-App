@@ -9,7 +9,7 @@ const entryHolder = document.getElementById('entryHolder');
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = '490a42fa7e4cec1525544b1a37201a2e';
 const getWeatherData = async (ZipCode) => {
-    const res = await fetch(baseURL+ZipCode+'&appid='+apiKey+'&units=metric')
+    const res = await fetch(baseURL+ZipCode+',US'+'&appid='+apiKey+'&units=metric')
     try {
         const data = await res.json();
         return data;
@@ -59,8 +59,19 @@ async function addJournal(e){
             updateUI()
         )
     }else{
-        document.getElementById('entryHolder').innerHTML = "Please enter Zipcode and your feelings!";
-        document.getElementById('entryHolder').style.color = "red";
+        if(zip.value == ""){
+            document.getElementById('entryHolder').innerHTML = "Please enter the correct zipcode!";
+        }
+        if(feelings.value == ""){
+            document.getElementById('entryHolder').innerHTML = "Please enter your feelings!";
+        }
+        if(zip.value == "" && feelings.value == ""){
+            document.getElementById('entryHolder').innerHTML = "Please enter zipcode and your feelings!";
+        }
+        document.getElementById('entryHolder').style.color = "#ff9900";
+        setTimeout(function() {
+            location.reload(1);
+        }, 5000);
     }
 }
 
