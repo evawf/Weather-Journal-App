@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+
 * { box-sizing: border-box;}
 
 html, body {
@@ -7,6 +9,7 @@ html, body {
     margin: 0;
     padding: 0;
     color: #f8f1f1;
+    font-family: 'Abril Fatface', cursive;
 }
 
 #app {
@@ -25,7 +28,7 @@ html, body {
 .headline {
     width: 100%;
     text-align: center;
-    font-family: 'Abril Fatface';
+    /* font-family: 'Abril Fatface'; */
     text-shadow: 1px 1px #11698e;
     margin-top: 20px;
 }
@@ -53,7 +56,7 @@ html, body {
 .feel {
     width: 250px;
     text-align: center;
-    margin: 20px 0;
+    margin: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,6 +65,7 @@ html, body {
 
 .myInput {
     width: 100%;
+    height: 80px;
     border-radius: 10px;
     border: #d3e0dc 1px solid;
     box-shadow: 0 1px 1px 0 #ece2e1;
@@ -97,22 +101,22 @@ html, body {
     flex-direction: column;
 }
 
-#entryHolder {
-    margin-top: 10px;
-}
-
 .showCard {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 1px 2px 0 #f8f1f1;
     transition: 0.3s;
     width: 250px;
     margin: 5px 0;
     padding: 10px 0;
     border-radius: 10px;
     background-color: #11698e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .showCard:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px 0 #f8f1f1;
 }
 
 #date {
@@ -120,13 +124,18 @@ html, body {
 }
 
 #location {
-    font-family: 'Akaya Telivigala';
     font-size: 20px;
     color:#16c79a;
     margin-bottom: 10px;
 }
 
 #content {
+    margin-top: 5px;
+}
+
+#map {
+    width: 150px;
+    height: 100px;
     margin-top: 5px;
 }
 

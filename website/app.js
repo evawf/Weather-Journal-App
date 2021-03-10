@@ -8,7 +8,6 @@ const entryHolder = document.getElementById('entryHolder');
 //Retrive Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = '490a42fa7e4cec1525544b1a37201a2e';
-console.log(apiKey);
 const getWeatherData = async (ZipCode) => {
     const res = await fetch(baseURL+ZipCode+'&appid='+apiKey+'&units=metric')
     try {
@@ -74,11 +73,40 @@ const updateUI = async () => {
         const weather = document.getElementById('weather');
         date.innerHTML = allData[allData.length - 1].date;
         location.innerHTML = allData[allData.length - 1].location;
+        const icon = document.createElement("SPAN");
+        weather.appendChild(icon);
+        icon.classList.add("material-icons-outlined");
+        
         temp.innerHTML = allData[allData.length - 1].temp + '&deg;C';
         weather.innerHTML = allData[allData.length - 1].weather + '&deg;C';
         content.innerHTML = "I feel " + allData[allData.length - 1].content;
         entryHolder.classList.add("showCard");
+
+        //Load map
+        displayMap();
     }catch(error){
         console.log('error', error);
     }
+}
+
+//Display Map
+async function displayMap(){
+    let data = await getWeatherData(document.getElementById('zip').value);
+    let lat = data.coord.lat;
+    let lon = data.coord.lon;
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXZhMjAyMSIsImEiOiJja2tiemNsbDIwaGJqMm9xaTYwYmE1Y3ZxIn0.YhNzI7I8fXILKdhilpnLUQ';
+    var map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    center: [lon, lat], // starting position [lng, lat]
+    zoom: 9 // starting zoom
+    });
+
+    // Set options
+    var marker = new mapboxgl.Marker({
+        color: "#16c79a",
+        draggable: true
+    }).setLngLat([lon, lat])
+    .addTo(map);
 }
