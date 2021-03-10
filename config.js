@@ -1,5 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
-module.exports = {
-    ow_key: process.env.OW_KEY
+module.exports.KEYS = {
+    owKey: process.env.OW_KEY,
+    mapToken: process.env.MAP_TOKEN
 };
+

@@ -4,13 +4,12 @@ const content = document.getElementById('content');
 const zip = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
 const entryHolder = document.getElementById('entryHolder');
-const { masterKey } = require('./config');
-
 
 //Retrive Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '490a42fa7e4cec1525544b1a37201a2e';
 const getWeatherData = async (ZipCode) => {
+    let KEYS = await getApiKey();
+    const apiKey = KEYS.apiKey;
     const res = await fetch(baseURL+ZipCode+',US'+'&appid='+apiKey+'&units=metric')
     try {
         const data = await res.json();
@@ -49,7 +48,7 @@ async function addJournal(e){
         let tempValue = Math.round(data.main.temp);
         let locationValue = data.name + ", " + data.sys.country;
         let weatherValue = data.weather[0].main + ", feels like " + Math.round(data.main.feels_like);
-        const contentValue = document.getElementById('feelings').value;
+        let contentValue = document.getElementById('feelings').value;
         postData('/journal', {
             date: currentDate,
             location: locationValue,
@@ -92,6 +91,7 @@ const updateUI = async () => {
         entryHolder.classList.add("showCard");
 
         //Load map
+        // getApiKey();
         displayMap();
     }catch(error){
         console.log('error', error);
@@ -103,8 +103,10 @@ async function displayMap(){
     let data = await getWeatherData(document.getElementById('zip').value);
     let lat = data.coord.lat;
     let lon = data.coord.lon;
+    let KEYS = await getApiKey();
+    const mapToken = KEYS.mapToken;
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXZhMjAyMSIsImEiOiJja2tiemNsbDIwaGJqMm9xaTYwYmE1Y3ZxIn0.YhNzI7I8fXILKdhilpnLUQ';
+    mapboxgl.accessToken = mapToken;
     var map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v11', // style URL
@@ -118,4 +120,16 @@ async function displayMap(){
         draggable: true
     }).setLngLat([lon, lat])
     .addTo(map);
+}
+
+//Get API Key
+async function getApiKey (){
+    const request = await fetch('/api');
+    try{
+        const KEYS = await request.json();
+        return KEYS;
+
+    }catch(error){
+        console.log('error', error);
+    }
 }
