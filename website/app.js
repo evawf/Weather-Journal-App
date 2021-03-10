@@ -44,9 +44,9 @@ async function addJournal(e){
     if(zip.value != "" && feelings.value != ""){
         let currentDate = new Date().toDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         let data = await getWeatherData(document.getElementById('zip').value);
-        let tempValue = data.main.temp;
+        let tempValue = Math.round(data.main.temp);
         let locationValue = data.name + ", " + data.sys.country;
-        let weatherValue = data.weather[0].main + ", feels like " + data.main.feels_like;
+        let weatherValue = data.weather[0].main + ", feels like " + Math.round(data.main.feels_like);
         const contentValue = document.getElementById('feelings').value;
         postData('/journal', {
             date: currentDate,
@@ -73,12 +73,8 @@ const updateUI = async () => {
         const weather = document.getElementById('weather');
         date.innerHTML = allData[allData.length - 1].date;
         location.innerHTML = allData[allData.length - 1].location;
-        const icon = document.createElement("SPAN");
-        weather.appendChild(icon);
-        icon.classList.add("material-icons-outlined");
-        
-        temp.innerHTML = allData[allData.length - 1].temp + '&deg;C';
-        weather.innerHTML = allData[allData.length - 1].weather + '&deg;C';
+        temp.innerHTML = "<i class='fas fa-snowflake'></i>" + allData[allData.length - 1].temp + '&deg;C' + "<i class='fas fa-temperature-low'></i>";
+        weather.innerHTML = "<i class='fas fa-cloud'></i>" + allData[allData.length - 1].weather + '&deg;C';
         content.innerHTML = "I feel " + allData[allData.length - 1].content;
         entryHolder.classList.add("showCard");
 
