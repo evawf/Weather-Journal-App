@@ -101,6 +101,35 @@ html, body {
     margin-top: 10px;
 }
 
+.showCard {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 250px;
+    margin: 5px 0;
+    padding: 10px 0;
+    border-radius: 10px;
+    background-color: #11698e;
+}
+
+.showCard:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+#date {
+    font-size: 10px;
+}
+
+#location {
+    font-family: 'Akaya Telivigala';
+    font-size: 20px;
+    color:#16c79a;
+    margin-bottom: 10px;
+}
+
+#content {
+    margin-top: 5px;
+}
+
 @media screen and (min-width: 350px) {
     #app {
         width: 300px;

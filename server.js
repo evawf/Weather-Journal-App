@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+console.log(process.env.apiKey);
+
 let projectData = {};
 
 const express = require('express');

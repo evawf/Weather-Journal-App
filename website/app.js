@@ -3,15 +3,16 @@ const temp = document.getElementById('temp');
 const content = document.getElementById('content');
 const zip = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
+const entryHolder = document.getElementById('entryHolder');
 
 //Retrive Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '490a42fa7e4cec1525544b1a37201a2e';
+const apiKey = process.env.apiKey;
+console.log(apiKey);
 const getWeatherData = async (ZipCode) => {
     const res = await fetch(baseURL+ZipCode+'&appid='+apiKey+'&units=metric')
     try {
         const data = await res.json();
-        console.log(data);
         return data;
     }
     catch(error) {
@@ -46,7 +47,7 @@ async function addJournal(e){
         let data = await getWeatherData(document.getElementById('zip').value);
         let tempValue = data.main.temp;
         let locationValue = data.name + ", " + data.sys.country;
-        let weatherValue = data.weather[0].main + ", feels like" + data.main.feels_like;
+        let weatherValue = data.weather[0].main + ", feels like " + data.main.feels_like;
         const contentValue = document.getElementById('feelings').value;
         postData('/journal', {
             date: currentDate,
@@ -76,6 +77,7 @@ const updateUI = async () => {
         temp.innerHTML = allData[allData.length - 1].temp + '&deg;C';
         weather.innerHTML = allData[allData.length - 1].weather + '&deg;C';
         content.innerHTML = "I feel " + allData[allData.length - 1].content;
+        entryHolder.classList.add("showCard");
     }catch(error){
         console.log('error', error);
     }
