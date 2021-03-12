@@ -2,14 +2,13 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 const apiKey = process.env.OW_KEY;
-const mapToken = process.env.MAP_TOKEN;
 
 let projectData = {};
 
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { request } = require('express');
+const axios = require('axios');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -33,25 +32,37 @@ function getJournal(req, res){
 //POST a journal
 const data = [];
 app.post('/journal', addJournal);
-function addJournal(req, res){
-    const newEntries = {
-        date: req.body.date,
-        location: req.body.location,
-        temp: req.body.temp,
-        weather: req.body.weather,
-        content: req.body.content
-     }
-    data.push(newEntries);
-    let projectData = data;
-    res.send(projectData);
+async function addJournal(req, res){
+    let currentDate = new Date().toDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const newEntry = {
+        content: req.body.content,
+        zip: req.body.zip,
+        date: currentDate,
+    }
+    weatherData = await getWeatherData(newEntry.zip);
+    newEntry['temp'] = Math.round(weatherData.main.temp);
+    newEntry['location'] = `${weatherData.name}, ${weatherData.sys.country}`;
+    newEntry['weather'] = `${weatherData.weather[0].main}, feels like ${weatherData.main.feels_like}`;
+    newEntry['lat'] = weatherData.coord.lat;
+    newEntry['lon'] = weatherData.coord.lon;
+
+
+    data.push(newEntry);
+    res.send(data);
 }
 
-//Get route for API_KEYS
-app.get('/api', getKey);
-function getKey(req, res){
-    let KEYS = {
-        "apiKey": apiKey,
-        "mapToken": mapToken
+const weatherApiBaseURL = 'http://api.openweathermap.org/data/2.5/weather';
+const getWeatherData = async (ZipCode) => {
+    try {
+        const res = await axios.get(weatherApiBaseURL, { params: {
+            zip: `${ZipCode},us`,
+            appid: apiKey,
+            units: 'metric',
+        }})
+        return res.data;
     }
-    res.send(KEYS);
+    catch(error) {
+        console.log("error", error);
+    }
 }
+

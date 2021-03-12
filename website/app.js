@@ -5,21 +5,6 @@ const zip = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
 const entryHolder = document.getElementById('entryHolder');
 
-//Retrive Weather Data from Openweather API
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const getWeatherData = async (ZipCode) => {
-    let KEYS = await getApiKey();
-    const apiKey = KEYS.apiKey;
-    const res = await fetch(baseURL+ZipCode+',US'+'&appid='+apiKey+'&units=metric')
-    try {
-        const data = await res.json();
-        return data;
-    }
-    catch(error) {
-        console.log("error", error);
-    }
-}
-
 //Async POST
 const postData = async (url = '', data = {}) => {
     const response = await fetch(url, {
@@ -39,26 +24,14 @@ const postData = async (url = '', data = {}) => {
     }
 }
 
-//Post data 
-document.getElementById('generate').addEventListener('click', addJournal);
-async function addJournal(e){
+//Post data
+const addJournal = async (e) => {
     if(zip.value != "" && feelings.value != ""){
-        let currentDate = new Date().toDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        let data = await getWeatherData(document.getElementById('zip').value);
-        let tempValue = Math.round(data.main.temp);
-        let locationValue = data.name + ", " + data.sys.country;
-        let weatherValue = data.weather[0].main + ", feels like " + Math.round(data.main.feels_like);
-        let contentValue = document.getElementById('feelings').value;
-        postData('/journal', {
-            date: currentDate,
-            location: locationValue,
-            temp: tempValue,
-            weather: weatherValue,
-            content: contentValue
-        })
-        .then(
-            updateUI()
-        )
+        data = await postData('/journal', {
+            zip: zip.value,
+            content: feelings.value,
+        });
+        updateUI();
     }else{
         if(zip.value == ""){
             document.getElementById('entryHolder').innerHTML = "Please enter the correct zipcode!";
@@ -83,29 +56,24 @@ const updateUI = async () => {
         const allData = await request.json();
         const location = document.getElementById('location');
         const weather = document.getElementById('weather');
-        date.innerHTML = allData[allData.length - 1].date;
-        location.innerHTML = allData[allData.length - 1].location;
-        temp.innerHTML = "<i class='fas fa-snowflake'></i>" + allData[allData.length - 1].temp + '&deg;C' + "<i class='fas fa-temperature-low'></i>";
-        weather.innerHTML = "<i class='fas fa-cloud'></i>" + allData[allData.length - 1].weather + '&deg;C';
-        content.innerHTML = "I feel " + allData[allData.length - 1].content;
+        data = allData[allData.length - 1];
+        date.innerHTML = data.date;
+        location.innerHTML = data.location;
+        temp.innerHTML = "<i class='fas fa-snowflake'></i>" + data.temp + '&deg;C' + "<i class='fas fa-temperature-low'></i>";
+        weather.innerHTML = "<i class='fas fa-cloud'></i>" + data.weather + '&deg;C';
+        content.innerHTML = "I feel " + data.content;
         entryHolder.classList.add("showCard");
 
         //Load map
-        displayMap();
+        await displayMap(data.lat, data.lon);
     }catch(error){
         console.log('error', error);
     }
 }
 
 //Display Map
-async function displayMap(){
-    let data = await getWeatherData(document.getElementById('zip').value);
-    let lat = data.coord.lat;
-    let lon = data.coord.lon;
-    let KEYS = await getApiKey();
-    const mapToken = KEYS.mapToken;
-
-    mapboxgl.accessToken = mapToken;
+const displayMap = async(lat, lon) => {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXZhMjAyMSIsImEiOiJja2tiemNsbDIwaGJqMm9xaTYwYmE1Y3ZxIn0.YhNzI7I8fXILKdhilpnLUQ';
     var map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v11', // style URL
@@ -121,13 +89,5 @@ async function displayMap(){
     .addTo(map);
 }
 
-//Get API Keys
-async function getApiKey (){
-    const request = await fetch('/api');
-    try{
-        const KEYS = await request.json();
-        return KEYS;
-    }catch(error){
-        console.log('error', error);
-    }
-}
+document.getElementById('generate').addEventListener('click', addJournal);
+updateUI();
