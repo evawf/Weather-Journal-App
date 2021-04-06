@@ -7,12 +7,16 @@ const entryHolder = document.getElementById('entryHolder');
 
 //Retrive Weather Data from Openweather API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const getWeatherData = async (ZipCode) => {
+const getWeatherData = async (ZipCode, countryCode) => {
     let KEYS = await getApiKey();
     const apiKey = KEYS.apiKey;
-    const res = await fetch(baseURL+ZipCode+',US'+'&appid='+apiKey+'&units=metric')
+    let country = 'US';
+    const url = baseURL+ZipCode+',' + (countryCode || 'US') +'&appid='+apiKey+'&units=metric';
+    console.log(url);
+    const res = await fetch(url)
     try {
         const data = await res.json();
+        console.log(JSON.stringify(data));
         return data;
     }
     catch(error) {
@@ -44,7 +48,8 @@ document.getElementById('generate').addEventListener('click', addJournal);
 async function addJournal(e){
     if(zip.value != "" && feelings.value != ""){
         let currentDate = new Date().toDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        let data = await getWeatherData(document.getElementById('zip').value);
+        console.log(document.getElementById('countryCode').value);
+        let data = await getWeatherData(document.getElementById('zip').value, document.getElementById('countryCode').value);
         let tempValue = Math.round(data.main.temp);
         let locationValue = data.name + ", " + data.sys.country;
         let weatherValue = data.weather[0].main + ", feels like " + Math.round(data.main.feels_like);
