@@ -40,8 +40,8 @@ html, body {
     margin: 20px 0;
 }
 
-#zip {
-    width: 100%;
+#zip, #countryCode {
+    width: 80%;
     height: 20px;
     border-radius: 20px;
     text-align: center;
@@ -61,8 +61,8 @@ html, body {
 }
 
 .myInput {
-    width: 100%;
-    height: 80px;
+    width: 80%;
+    height: 90px;
     border-radius: 10px;
     border: #d3e0dc 1px solid;
     box-shadow: 0 1px 1px 0 #ece2e1;
